@@ -1,0 +1,21 @@
+---
+- name: Desbloquear usuario en sistema Linux
+  hosts: tu_host  # Reemplaza 'tu_host' con el nombre del host o grupo de hosts donde se encuentra el usuario.
+  become: yes
+  gather_facts: yes
+
+  vars:
+    username_to_unlock: "{{ lookup('env', 'USERNAME_TO_UNLOCK') | default('') }}"  # Obtiene la variable extra 'USERNAME_TO_UNLOCK' o establece una cadena vacía si no se proporciona.
+
+  tasks:
+    - name: Desbloquear usuario
+      user:
+        name: "{{ username_to_unlock }}"
+        state: present
+        update_password: on_create
+      ignore_errors: yes
+      register: resultado_desbloqueo
+
+    - name: Imprimir resultado
+      debug:
+        var: resultado_desbloqueo
