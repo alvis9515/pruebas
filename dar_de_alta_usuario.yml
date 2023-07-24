@@ -1,0 +1,20 @@
+# dar_de_alta_usuario.yml
+---
+- name: Dar de alta a un usuario en hosts
+  hosts: tu_grupo_de_hosts  # Reemplaza "tu_grupo_de_hosts" por el nombre de tu grupo de hosts definido en el archivo de inventario
+  vars_prompt:
+    - name: nombre_usuario
+      prompt: "Ingresa el nombre del usuario que deseas dar de alta:"
+
+  tasks:
+    - name: Verificar si el usuario ya existe
+      command: id "{{ nombre_usuario }}"
+      register: resultado_comando
+      ignore_errors: yes
+
+    - name: Dar de alta al usuario especificado
+      become: yes
+      user:
+        name: "{{ nombre_usuario }}"
+        state: present
+      when: resultado_comando.rc != 0
