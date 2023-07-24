@@ -1,5 +1,5 @@
 ---
-- hosts: 'clients'
+- hosts: Host
 
   tasks:
   - name: 'Change user password'
