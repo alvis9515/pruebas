@@ -1,7 +1,8 @@
 # dar_de_alta_usuario.yml
 ---
 - name: Dar de alta a un usuario en hosts
-
+  hosts: all
+  
   tasks:
     - name: Verificar si el usuario ya existe
       command: id "{{ nombre_usuario }}"
