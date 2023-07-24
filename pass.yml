@@ -1,5 +1,5 @@
 ---
-- hosts: Host
+- hosts: 192.168.73.238
 
   tasks:
   - name: 'Change user password'
