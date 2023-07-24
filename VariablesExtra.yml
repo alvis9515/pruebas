@@ -1,6 +1,6 @@
 ---
 - name: Desbloquear usuario en sistema Linux
-  hosts: tu_host  # Reemplaza 'tu_host' con el nombre del host o grupo de hosts donde se encuentra el usuario.
+  hosts: Host  # Reemplaza 'tu_host' con el nombre del host o grupo de hosts donde se encuentra el usuario.
   become: yes
   gather_facts: yes
 
