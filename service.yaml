@@ -1,5 +1,5 @@
 - name: Starting the services on the web servers
-  hosts: web_servers
+  hosts: all
   become: true
   gather_facts: false
 
