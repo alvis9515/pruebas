@@ -1,7 +1,7 @@
 # usuarios.yml
 usuarios:
-  - nombre_usuario: usuario1
-    contraseña: contraseña1
-  - nombre_usuario: usuario2
-    contraseña: contraseña2
+  - nombre_usuario: alvis1
+    contraseña: 1595
+  - nombre_usuario: alvis
+    contraseña: 1595
   # Agrega más usuarios según sea necesario
