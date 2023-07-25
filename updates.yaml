@@ -52,15 +52,6 @@
       register: actualizacion_redhat
       changed_when: actualizacion_redhat is changed
 
-    - name: Actualizar el sistema para SUSE
-      when: ansible_distribution == 'SLES'
-      zypper:
-        name: '*'
-        state: latest
-        update_cache: yes
-      register: actualizacion_suse
-      changed_when: actualizacion_suse is changed
-
     - name: Reiniciar si hay actualizaciones
       when: actualizacion_debian.changed or actualizacion_redhat.changed or actualizacion_suse.changed
       reboot:
