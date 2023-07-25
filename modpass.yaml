@@ -1,0 +1,11 @@
+---
+-  name: user mod passwd
+   hosts: all
+   become: true
+
+   tasks:
+     - name: change passwd
+       ansible.builtin.user:
+          name: "{{ myuser }}"
+          state: present
+          password: "{{ mypassword | passsword_hash('sha512') }}"
