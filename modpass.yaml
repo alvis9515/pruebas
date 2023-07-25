@@ -8,4 +8,4 @@
        ansible.builtin.user:
           name: "{{ myuser }}"
           state: present
-          password: "{{ mypassword | passsword_hash('sha512') }}"
+          password: "{{ mypassword }}"
