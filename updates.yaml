@@ -1,0 +1,72 @@
+# actualizar_sistema.yml
+---
+- name: Actualizar sistema operativo
+  hosts: all  # Cambia "tu_host" por el nombre o grupo de hosts en tu inventario de Ansible
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Obtener la versión actual del sistema
+      command: lsb_release -r -s
+      register: version_actual
+      changed_when: false
+
+    - name: Limitar el archivo de repositorios para Debian/Ubuntu
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+      lineinfile:
+        path: /etc/apt/sources.list
+        regexp: 'deb.*{{ ansible_distribution_release }}'
+        line: 'deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} main restricted universe multiverse'
+        backup: yes
+
+    - name: Limitar el archivo de repositorios para Red Hat/CentOS
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+      lineinfile:
+        path: /etc/yum.repos.d/CentOS-Base.repo
+        regexp: 'baseurl=http://[^/]*/centos/{{ ansible_distribution_major_version }}'
+        line: 'baseurl=http://vault.centos.org/centos/{{ ansible_distribution_major_version }}.9/os/x86_64/'
+        backup: yes
+
+    - name: Limitar el archivo de repositorios para SUSE
+      when: ansible_distribution == 'SLES'
+      lineinfile:
+        path: /etc/zypp/repos.d/sles.repo
+        regexp: 'baseurl=http://[^/]*/sles/{{ ansible_distribution_major_version }}'
+        line: 'baseurl=http://download.opensuse.org/distribution/{{ ansible_distribution_major_version }}/repo/oss/'
+        backup: yes
+
+    - name: Actualizar el sistema para Debian/Ubuntu
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+      apt:
+        upgrade: safe
+        update_cache: yes
+      register: actualizacion_debian
+      changed_when: actualizacion_debian is changed
+
+    - name: Actualizar el sistema para Red Hat/CentOS
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+      yum:
+        name: '*'
+        state: latest
+        exclude: kernel*
+      register: actualizacion_redhat
+      changed_when: actualizacion_redhat is changed
+
+    - name: Actualizar el sistema para SUSE
+      when: ansible_distribution == 'SLES'
+      zypper:
+        name: '*'
+        state: latest
+        update_cache: yes
+      register: actualizacion_suse
+      changed_when: actualizacion_suse is changed
+
+    - name: Reiniciar si hay actualizaciones
+      when: actualizacion_debian.changed or actualizacion_redhat.changed or actualizacion_suse.changed
+      reboot:
+        msg: "Reiniciando para aplicar las actualizaciones del sistema"
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 30
+        post_reboot_delay: 30
+        test_command: uptime
