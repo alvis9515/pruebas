@@ -1,7 +1,7 @@
 # cambiar_contraseñas.yml
 ---
 - name: Cambiar contraseñas de usuarios
-  hosts: All  # Cambia "tu_host" por el nombre o grupo de hosts en tu inventario de Ansible
+  hosts: all  # Cambia "tu_host" por el nombre o grupo de hosts en tu inventario de Ansible
 
   tasks:
     - name: Cambiar contraseña de usuarios
