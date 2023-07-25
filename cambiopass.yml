@@ -1,0 +1,15 @@
+# cambiar_contraseñas.yml
+---
+- name: Cambiar contraseñas de usuarios
+  hosts: tu_host  # Cambia "tu_host" por el nombre o grupo de hosts en tu inventario de Ansible
+
+  tasks:
+    - name: Cambiar contraseña de usuarios
+      become: yes
+      vars_files:
+        - usuarios.yml
+      vars:
+        encrypted_password: "{{ item.contraseña | password_hash('sha512', 65534 | random(0, 65535) ) }}"  # Hash de la contraseña
+      user:
+        name: "{{ item.nombre_usuario }}"
+        password: "{{ encrypted_password }}"
