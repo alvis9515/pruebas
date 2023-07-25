@@ -4,6 +4,7 @@
 
   tasks:
     - name: Cambiar contraseña de usuarios
+      ansible.builtin.user:
       become: yes
       vars_files:
         - usuarios.yml
