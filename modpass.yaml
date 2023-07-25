@@ -9,3 +9,4 @@
           name: "{{ myuser }}"
           state: present
           password: "{{ mypassword }}"
+          password_lock: false
