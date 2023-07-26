@@ -4,21 +4,8 @@
   become: true
   
   tasks:
-    - name: comprobar si exite home
-      stat:
-        path: '/home/{{item}}'
-      loop: "{{ BAJA_USUARIOS }}"
-      register: usuariosbaja
-
-    - debug:
-        msg: "El usuario cuenta con una carpeta /home"
-      when: item.stat.exists
-      loop: '{{ usuariosbaja }}'
-
-    - name: elimina usuario sin puntos de montage en /home
-      user:
-        name: "{{ item }}"
+    - name: Remove the user seleccionado
+      ansible.builtin.user:
+        name: "{{ nombre_usuario }}"
         state: absent
         remove: yes
-      when: item.stat.exists
-      loop: '{{ usuariosbaja }}' 
