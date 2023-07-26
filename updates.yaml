@@ -6,19 +6,6 @@
   become: true
 
   tasks:
-    - name: Obtener la versión actual del sistema
-      command: lsb_release -r -s
-      register: version_actual
-      changed_when: false
-
-    - name: Limitar el archivo de repositorios para Debian/Ubuntu
-      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
-      lineinfile:
-        path: /etc/apt/sources.list
-        regexp: 'deb.*{{ ansible_distribution_release }}'
-        line: 'deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} main restricted universe multiverse'
-        backup: yes
-
     - name: Limitar el archivo de repositorios para Red Hat/CentOS
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
       lineinfile:
@@ -26,22 +13,6 @@
         regexp: 'baseurl=http://[^/]*/centos/{{ ansible_distribution_major_version }}'
         line: 'baseurl=http://vault.centos.org/centos/{{ ansible_distribution_major_version }}.9/os/x86_64/'
         backup: yes
-
-    - name: Limitar el archivo de repositorios para SUSE
-      when: ansible_distribution == 'SLES'
-      lineinfile:
-        path: /etc/zypp/repos.d/sles.repo
-        regexp: 'baseurl=http://[^/]*/sles/{{ ansible_distribution_major_version }}'
-        line: 'baseurl=http://download.opensuse.org/distribution/{{ ansible_distribution_major_version }}/repo/oss/'
-        backup: yes
-
-    - name: Actualizar el sistema para Debian/Ubuntu
-      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
-      apt:
-        upgrade: safe
-        update_cache: yes
-      register: actualizacion_debian
-      changed_when: actualizacion_debian is changed
 
     - name: Actualizar el sistema para Red Hat/CentOS
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
