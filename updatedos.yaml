@@ -1,0 +1,46 @@
+---
+- name: Actualizar servidores basados en Debian o RedHat y reiniciarlos si es necesario
+  become: true
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Actualizar servidor (vía yum)
+      yum:
+        update_cache: true
+        name: '*'
+        state: latest
+      when:
+        ansible_pkg_mgr == 'yum'
+    - name: Actualizar servidor (vía dnf)
+      dnf:
+        update_cache: true
+        name: '*'
+        state: latest
+      when:
+        ansible_pkg_mgr == 'dnf'
+    - name: Actualizar servidor (vía apt)
+      apt:
+        update_cache: true
+        name: '*'
+        state: latest
+      when:
+        ansible_pkg_mgr == 'apt'        
+    - name: Comprobar si es necesario reiniciar (RedHat)
+      shell:
+        cmd: "/usr/bin/needs-restarting"
+      register: needs_restart
+      changed_when: needs_restart.stdout != ''
+      failed_when: needs_restart.rc != 0
+      when:
+        ansible_os_family == 'RedHat'
+    - name: Comprobar si es necesario reiniciar (Debian)
+      stat:
+        path: /etc/hosts
+      register: needs_restart
+      changed_when: needs_restart.stat.exists == True
+      when:
+        ansible_os_family == 'Debian'
+    - name: Reiniciar el servidor si es necesario
+      reboot:
+      when:
+        needs_restart is changed and (ansible_os_family == 'Debian' or ansible_os_family == 'RedHat')    
