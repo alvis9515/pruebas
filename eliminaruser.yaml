@@ -1,0 +1,24 @@
+---
+- name: eliminar usuario
+  hosts: all  # Reemplaza "tu_grupo_de_hosts" por el nombre de tu grupo de hosts definido en el archivo de inventario
+  become: true
+  
+  tasks:
+    - name: comprobar si exite home
+      ansible.builtin.stat:
+        path: '/home/{{item}}'
+      loop: "{{ BAJA_USUARIOS }}"
+      register: usuariosbaja
+
+    - debug:
+        msg: "El usuario cuenta con una carpeta /home"
+      when: item.stat.exists
+      loop: '{{ usuariosbaja }}'
+
+    - name: elimina usuario sin puntos de montage en /home
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      when: item.stat.exists
+      loop: '{{ usuariosbaja }}' 
