@@ -5,7 +5,7 @@
   
   tasks:
     - name: comprobar si exite home
-      ansible.builtin.stat:
+      stat:
         path: '/home/{{item}}'
       loop: "{{ BAJA_USUARIOS }}"
       register: usuariosbaja
