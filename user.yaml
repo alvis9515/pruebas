@@ -3,7 +3,9 @@
     tasks:
       - name: new users
         ansible.builtin.user:
-          name: johnd
-          comment: John Doe
-          uid: 1040
-          group: wheel  
+          name: {{ new_users }}
+          comment: {{ comments }}
+          uid: {{ useruid }}
+          group: {{ group }}  
+          update_password: always
+          password: "{{ newpassword|password_hash('sha512') }}"
