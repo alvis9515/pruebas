@@ -2,7 +2,11 @@
 -  name: user mod passwd
    hosts: all
    become: true
-
+   vars: 
+     test_user_salt: ''
+     myuser: ''
+     new_password: ''
+     
    tasks:
      - name: change passwd
        ansible.builtin.user:
