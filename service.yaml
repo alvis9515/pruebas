@@ -1,10 +1,10 @@
-- name: Starting the services on the web servers
+- name: se levantan servicios
   hosts: all
   become: true
   gather_facts: false
 
   tasks:
-    - name: Ensure the services are started
+    - name: servicios a iniciar
       ansible.builtin.service:
         name: "{{ item }}"
         state: started
