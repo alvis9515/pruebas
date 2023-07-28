@@ -1,6 +1,6 @@
 ---
 - name: eliminar usuario
-  hosts: all  # Reemplaza "tu_grupo_de_hosts" por el nombre de tu grupo de hosts definido en el archivo de inventario
+  hosts: all 
   become: true
   
   tasks:
