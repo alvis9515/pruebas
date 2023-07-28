@@ -4,7 +4,6 @@
     become: true
 
     tasks:
- 
-    - name: Install latest passlib with pip
-    pip: name=passlib
+      - name: Install latest passlib with pip
+        pip: name=passlib
 
