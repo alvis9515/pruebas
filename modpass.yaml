@@ -1,16 +1,9 @@
 ---
--  name: user mod passwd
-   hosts: all
-   become: true
-   vars: 
-     test_user_salt: ''
-     myuser: ''
-     new_password: ''
-     
-   tasks:
-     - name: change passwd
-       ansible.builtin.user:
-          name: "{{ myuser }}"
-          state: present
-          password: "{{ '{{ new_password }}' | password_hash('sha512', test_user_salt) }}"
-          update_password: 'always'
+- hosts: all
+  become: yes
+  tasks:
+    - name: Change user password
+      user:
+        name: "{{ myuser }}"
+        update_password: always
+        password: "{{ newpassword|password_hash('sha512') }}"
