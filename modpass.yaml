@@ -8,5 +8,5 @@
        ansible.builtin.user:
           name: "{{ myuser }}"
           state: present
-          password: '{{ new_password | password_hash("sha512") }}'
+          password: "{{ '{{ new_password }}' | password_hash('sha512') }}"
           update_password: 'always'
