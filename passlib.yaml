@@ -1,9 +1,8 @@
 ---
-  - name: instalar pip
-    host: all
-    become: true
+-  name: user mod passwd
+   hosts: all
+   become: true
 
-    tasks:
-      - name: Install latest passlib with pip
-        pip: name=passlib
-
+   tasks:
+    - name: Install latest passlib with pip
+      pip: name=passlib
