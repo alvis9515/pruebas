@@ -1,0 +1,10 @@
+---
+  - name: instalar pip
+    host: all
+    become: true
+
+    tasks:
+ 
+    - name: Install latest passlib with pip
+    pip: name=passlib
+
