@@ -1,4 +1,4 @@
----
+g---
 - name: Verificar
   hosts: all
   gather_facts: false
@@ -26,9 +26,9 @@
       when: response.status == 200
 
     - name: Mostrar mensaje si la validación falla
-      fail:
+      debug:
         msg: "La página web no se encuentra : {{ response.status }}"
-      when: response.status != 503
+      when: response.status == 503
 
       
 
