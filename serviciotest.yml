@@ -15,26 +15,28 @@
         url: "{{ item }}"
         method: GET
         return_content: no
+      loop: "{{ pagina }}"
       register: response
       retries: "{{ max_attempts }}"
       delay: "{{ delay_seconds }}"
       failed_when: false
       changed_when: false
-      loop: "{{ pagina }}"
 
     - name: Mostrar si la validación fue exitosa
       debug:
-        msg: "El estado es {{ pagina }} : {{ response.status }}"
+        msg: "El estado es {{ item.item }} : {{ item.status }}"
+      with_items: "{{ response.results }}"
       when: response.status == 200
 
     - name: Mostrar mensaje si la validación falla
       debug:
-        msg: "La página web no se encuentra {{ pagina }} : {{ response.status }}"
+        msg: "El estado es {{ item.item }} : {{ item.status }}"
+      with_items: "{{ response.results }}"
       when: response.status == 503
 
     - name: Agregar resultados a la variable 'results'
       set_fact:
-        results: "{{ results + [{'url': pagina, 'status': response.status}] }}"
+        results: "{{ results + [{'url': item.item, 'status': item.status}] }}"
         
     - name: Exportar resultados a archivo JSON
       copy:
