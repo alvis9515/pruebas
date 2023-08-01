@@ -27,5 +27,5 @@
     - name: Mostrar mensaje si la validación falla
       fail:
         msg: "La página web no está disponible (Código de estado: {{ response.status }})"
-      when: response.status != 200
+      when: response.status == 503
 
