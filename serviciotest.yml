@@ -7,6 +7,7 @@
     website_url: "{{ pagina }}"
     max_attempts: 10
     delay_seconds: 10
+    results: []
 
   tasks:
     - name: Verificar si la página web está arriba
@@ -34,7 +35,6 @@
       copy:
         content: "{{ results | to_nice_json }}"
         dest: "/var/temp/resultados.json"
-      vars:
-        results: "{{ results | default([]) + [{'url': pagina ~ '/' ~ item, 'status': response.status}] }}"      
+      when: results|length > 0  # Exportar solo si hay resultados en la variable 'results'
 
 
