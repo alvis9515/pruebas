@@ -22,22 +22,22 @@
       failed_when: false
       changed_when: false
 
-    - name: Mostrar si la validación fue exitosa
-      debug:
-        msg: "El estado es {{ item.item }} : {{ item.status }}"
-      with_items: "{{ response.results }}"
-      when: response.status == 200
-
-    - name: Mostrar mensaje si la validación falla
-      debug:
-        msg: "La página web no se encuentra {{ item.item }} : {{ item.status }}"
-      with_items: "{{ response.results }}"
-      when: item.status == 503
-
     - name: Agregar resultados a la variable 'results'
       set_fact:
         results: "{{ results + [{'url': item.item, 'status': item.status}] }}"
-        
+
+    - name: Mostrar si la validación fue exitosa
+      debug:
+        msg: "El estado es {{ item.url }} : {{ item.status }}"
+      with_items: "{{ results }}"
+      when: item.status == 200
+
+    - name: Mostrar mensaje si la validación falla
+      debug:
+        msg: "La página web no se encuentra {{ item.url }} : {{ item.status }}"
+      with_items: "{{ results }}"
+      when: item.status == 503
+
     - name: Exportar resultados a archivo JSON
       copy:
         content: "{{ results | to_nice_json }}"
