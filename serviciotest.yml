@@ -13,8 +13,8 @@
       uri:
         url: "{{ pagina }}"
         method: GET
-        return_content: yes
-        status_code: 200
+        return_content: no
+        follow_redirects: no
       register: response
       retries: "{{ max_attempts }}"
       delay: "{{ delay_seconds }}"
