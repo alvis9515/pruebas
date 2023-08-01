@@ -25,6 +25,7 @@
     - name: Agregar resultados a la variable 'results'
       set_fact:
         results: "{{ results + [{'url': item.item, 'status': item.status}] }}"
+      loop: "{{ response.results }}"
 
     - name: Mostrar si la validación fue exitosa
       debug:
