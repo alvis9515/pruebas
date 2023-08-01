@@ -15,7 +15,7 @@
         method: GET
         return_content: no
       register: response
-      until: response.status in [200, 404, 503]  # Aceptar códigos 200, 404 o 503 como respuestas válidas
+      until: response.status in [200, 404, 503]
       retries: "{{ max_attempts }}"
       delay: "{{ delay_seconds }}"
       
