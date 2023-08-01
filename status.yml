@@ -8,7 +8,7 @@
       service_facts:
         filters:
           name: "{{ item }}"
-      loop: "{{ pagina }}"          
+      loop: "{{ service_name }}"          
       register: service_status
 
     - name: Mostrar el estado del servicio
