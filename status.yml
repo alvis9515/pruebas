@@ -11,12 +11,20 @@
       changed_when: false
       ignore_errors: yes
 
-    - name: Mostrar el estado de los servicios
-      debug:
-        msg: >
-          {{ item.stdout }}
-          {% if item.rc != 0 %}
-          El servicio {{ item.item }} está deshabilitado.
-          {% endif %}
-      loop: "{{ service_info.results }}"
-      when: item.rc == 0
+    - name: Crear archivo JSON con la información
+      lineinfile:
+        dest: "/tmp/service_info.json"
+        line: |
+          {
+            "host": "{{ ansible_host }}",
+            "services": [
+              {% for item in service_info %}
+              {
+                "name": "{{ item.item }}",
+                "status": "{{ item.stdout }}",
+                "rc": "{{ item.rc }}"
+              }{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ]
+          }
+      create: yes
