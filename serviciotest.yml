@@ -22,7 +22,8 @@
 
     - name: Respuesta
       debug:
-       var: response.content
+        msg: "El estado es: {{ response.status }}"
+      when: response.status == 200
 
 
 
