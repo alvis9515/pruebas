@@ -1,0 +1,39 @@
+---
+- name: instalar y copiar
+  hosts: all
+
+  tasks:
+    - name: instalar apache
+      dnf:
+        name: httpd
+
+    - name: clonar git
+      git:
+        repo: https://github.com/alvis9515/archivos2.git
+        dest: /var/tmp/
+
+    - name: copiar archivos
+      copy:
+        src: "/var/tmp/archivos2/"
+        dest: /var/www/html/
+        remote_src: true
+
+    - name: levantar servicio
+      systemd:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: configurar puertos
+      firewalld:
+        port: 8080/tcp
+        permanent: yes
+        immediate: yes
+        state: enabled
+
+
+
+
+
+      
+
