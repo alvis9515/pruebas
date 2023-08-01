@@ -12,5 +12,9 @@
 
     - name: Mostrar el estado de los servicios
       debug:
-        msg: "{{ item.stdout }}"
+        msg: >
+          {{ item.stdout }}
+          {% if item.rc != 0 %}
+          El servicio {{ item.item }} está deshabilitado.
+          {% endif %}
       loop: "{{ service_info.results }}"
