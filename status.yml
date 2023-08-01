@@ -12,9 +12,8 @@
       ignore_errors: true
 
     - name: Crear archivo JSON con la información
-      lineinfile:
-        dest: "/tmp/service_info.json"
-        line: |
+      set_fact:
+        json_content: |
           {
             "host": "{{ ansible_host }}",
             "services": [
@@ -27,4 +26,12 @@
               {% endfor %}
             ]
           }
-      create: true
+
+    - name: Guardar contenido JSON en archivo
+      copy:
+        content: "{{ json_content }}"
+        dest: "/tmp/service_info.json"
+
+
+
+
