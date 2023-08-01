@@ -15,10 +15,11 @@
         method: GET
         return_content: no
       register: response
-      until: response.status in [200, 404, 503]
       retries: "{{ max_attempts }}"
       delay: "{{ delay_seconds }}"
-      
+      failed_when: response.status == 503
+      changed_when: false
+
     - name: Mostrar si la validación fue exitosa
       debug:
         msg: "El código de estado es {{ response.status }}"
@@ -27,5 +28,5 @@
     - name: Mostrar mensaje si la validación falla
       fail:
         msg: "La página web no está disponible (Código de estado: {{ response.status }})"
-      when: response.status == 503
+      when: response.status != 200
 
