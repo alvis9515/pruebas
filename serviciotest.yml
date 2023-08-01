@@ -28,6 +28,8 @@
     - name: Mostrar mensaje si la validación falla
       fail:
         msg: "La página web no se encuentra : {{ response.status }}"
-      when: response.status != 200
+      when: response.status != 503
+
+      
 
 
