@@ -5,13 +5,12 @@
   
   tasks:
     - name: Obtener información sobre los servicios
-      service_facts:
-        filters:
-          names: "{{ service_names }}"
+      shell: "systemctl status {{ item }}"
+      loop: "{{ service_names }}"
       register: service_info
+      changed_when: false
 
     - name: Mostrar el estado de los servicios
       debug:
-        msg: "El servicio {{ item.item }} está en estado {{ item.service.state }}"
-      loop: "{{ service_info.services }}"
-
+        msg: "{{ item.stdout }}"
+      loop: "{{ service_info.results }}"
