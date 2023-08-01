@@ -4,14 +4,14 @@
   become: yes
 
   tasks:
-    - name: Verificar el estado del servicio
-      service_facts:
-        filters:
-          name: "{{ item }}"
-      loop: "{{ service_name }}"          
+    - name: Verificar el estado de los servicios
+      systemd:
+        name: "{{ item }}"
+        state: status
+      loop: "{{ service_names }}"
       register: service_status
 
-    - name: Mostrar el estado del servicio
+    - name: Mostrar el estado de los servicios
       debug:
-        var: service_status
+        var: service_status.results
 
