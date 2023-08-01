@@ -30,3 +30,8 @@
         msg: "La página web no está disponible (Código de estado: {{ response.status }})"
       when: response.status != 200
 
+    - name: Marcar la tarea como completada
+      assert:
+        that:
+          - "response.status == 200 or response.status == 503"
+
