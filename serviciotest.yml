@@ -21,11 +21,13 @@
       failed_when: response.status in [200, 404, 503]
       changed_when: false      
 
-
-    - name: Respuesta
+    - name: Mostrar si la validación fue exitosa
       debug:
-        msg: "El estado es: {{ response.status }}"
+        msg: "El código de estado es {{ response.status }}"
       when: response.status == 200
 
-
+    - name: Mostrar mensaje si la validación falla
+      fail:
+        msg: "La página web no está disponible (Código de estado: {{ response.status }})"
+      when: response.status != 200
 
