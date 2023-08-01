@@ -30,9 +30,9 @@
 
     - name: Mostrar mensaje si la validación falla
       debug:
-        msg: "El estado es {{ item.item }} : {{ item.status }}"
+        msg: "La página web no se encuentra {{ item.item }} : {{ item.status }}"
       with_items: "{{ response.results }}"
-      when: response.status == 503
+      when: item.status == 503
 
     - name: Agregar resultados a la variable 'results'
       set_fact:
