@@ -20,9 +20,9 @@
       retries: "{{ max_attempts }}"
       delay: "{{ delay_seconds }}"
 
-#    - name: Respuesta
-#      debug:
-#       var: response.content
+    - name: Respuesta
+      debug:
+       var: response.content
 
 
 
