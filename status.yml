@@ -4,11 +4,12 @@
   become: yes
   
   tasks:
-    - name: Obtener información sobre los servicios
+    - name: Obtener información sobre los servicios habilitados
       shell: "systemctl status {{ item }}"
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
+      ignore_errors: yes
 
     - name: Mostrar el estado de los servicios
       debug:
@@ -18,3 +19,4 @@
           El servicio {{ item.item }} está deshabilitado.
           {% endif %}
       loop: "{{ service_info.results }}"
+      when: item.rc == 0
