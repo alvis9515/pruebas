@@ -2,16 +2,16 @@
 - name: Verificar el estado de un servicio en Linux
   hosts: all
   become: yes
-
+  
   tasks:
-    - name: Verificar el estado de los servicios
-      systemd:
-        name: "{{ item }}"
-        state: status
-      loop: "{{ service_names }}"
-      register: service_status
+    - name: Obtener información sobre los servicios
+      service_facts:
+        filters:
+          names: "{{ service_names }}"
+      register: service_info
 
     - name: Mostrar el estado de los servicios
       debug:
-        var: service_status.results
+        msg: "El servicio {{ item.item }} está en estado {{ item.service.state }}"
+      loop: "{{ service_info.services }}"
 
