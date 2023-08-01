@@ -22,12 +22,12 @@
 
     - name: Mostrar si la validación fue exitosa
       debug:
-        msg: "El estado es {{ response.status }}"
+        msg: "El estado es {{ pagina }} : {{ response.status }}"
       when: response.status == 200
 
     - name: Mostrar mensaje si la validación falla
       debug:
-        msg: "La página web no se encuentra : {{ response.status }}"
+        msg: "La página web no se encuentra {{ pagina }} : {{ response.status }}"
       when: response.status == 503
 
       
