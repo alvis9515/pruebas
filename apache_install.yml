@@ -10,7 +10,7 @@
     - name: clonar git
       git:
         repo: https://github.com/alvis9515/archivos2.git
-        dest: /var/tmp/
+        dest: /tmp/pruebas
 
     - name: copiar archivos
       copy:
