@@ -22,7 +22,7 @@
 
     - name: Mostrar si la validación fue exitosa
       debug:
-        msg: "El código de estado es {{ response.status }}"
+        msg: "El estado es {{ response.status }}"
       when: response.status == 200
 
     - name: Mostrar mensaje si la validación falla
