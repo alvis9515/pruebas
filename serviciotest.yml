@@ -1,0 +1,28 @@
+---
+- name: Verificar
+  hosts: all
+  gather_facts: false
+
+  vars:
+    website_url: "http://holamundo.com"
+    max_attempts: 10
+    delay_seconds: 10
+
+  tasks:
+    - name: Verificacion
+      uri:
+        url: "{{ website_url }}"
+        method: GET
+        return_content: yes
+        status_code: 200
+      register: response
+      until: response.status == 200
+      retries: "{{ max_attempts }}"
+      delay: "{{ delay_seconds }}"
+
+#    - name: Respuesta
+#      debug:
+#       var: response.content
+
+
+
