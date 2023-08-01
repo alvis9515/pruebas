@@ -9,18 +9,16 @@
     delay_seconds: 10
 
   tasks:
-    - name: Verificacion
+    - name: Verificar si la página web está arriba
       uri:
         url: "{{ pagina }}"
         method: GET
         return_content: no
-        follow_redirects: no
       register: response
+      until: response.status in [200, 404, 503]  # Aceptar códigos 200, 404 o 503 como respuestas válidas
       retries: "{{ max_attempts }}"
       delay: "{{ delay_seconds }}"
-      failed_when: response.status in [200, 404, 503]
-      changed_when: false      
-
+      
     - name: Mostrar si la validación fue exitosa
       debug:
         msg: "El código de estado es {{ response.status }}"
