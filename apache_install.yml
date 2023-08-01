@@ -14,7 +14,7 @@
 
     - name: copiar archivos
       copy:
-        src: " /tmp/pruebas"
+        src: "/tmp/pruebas/"
         dest: /var/www/html/
         remote_src: true
 
