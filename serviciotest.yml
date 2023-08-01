@@ -30,6 +30,11 @@
         msg: "La página web no se encuentra {{ pagina }} : {{ response.status }}"
       when: response.status == 503
 
-      
+    - name: Exportar resultados a archivo JSON
+      copy:
+        content: "{{ results | to_nice_json }}"
+        dest: "/var/temp/resultados.json"
+      vars:
+        results: "{{ results | default([]) + [{'url': pagina ~ '/' ~ item, 'status': response.status}] }}"      
 
 
