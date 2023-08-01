@@ -16,9 +16,11 @@
         return_content: yes
         status_code: 200
       register: response
-      until: response.status in [200, 404, 503]
       retries: "{{ max_attempts }}"
       delay: "{{ delay_seconds }}"
+      failed_when: response.status in [200, 404, 503]
+      changed_when: false      
+
 
     - name: Respuesta
       debug:
