@@ -4,14 +4,14 @@
   gather_facts: false
 
   vars:
-    website_url: "http://holamundo.com"
+    website_url: "{{ pagina }}"
     max_attempts: 10
     delay_seconds: 10
 
   tasks:
     - name: Verificacion
       uri:
-        url: "{{ website_url }}"
+        url: "{{ pagina }}"
         method: GET
         return_content: yes
         status_code: 200
