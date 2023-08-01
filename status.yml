@@ -9,7 +9,7 @@
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Crear archivo JSON con la información
       lineinfile:
@@ -27,4 +27,4 @@
               {% endfor %}
             ]
           }
-      create: yes
+      create: true
