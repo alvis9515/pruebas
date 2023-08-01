@@ -12,7 +12,7 @@
   tasks:
     - name: Verificar si la página web está arriba
       uri:
-        url: "{{ pagina }}"
+        url: "{{ item }}"
         method: GET
         return_content: no
       register: response
@@ -20,6 +20,7 @@
       delay: "{{ delay_seconds }}"
       failed_when: false
       changed_when: false
+      loop: "{{ pagina }}"
 
     - name: Mostrar si la validación fue exitosa
       debug:
