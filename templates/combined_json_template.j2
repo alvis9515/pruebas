@@ -1,0 +1,10 @@
+[
+{% for item in combined_json_list %}
+    {
+        "host": "{{ item.host }}",
+        "name": "{{ item.name }}",
+        "status": {{ item.status }}
+    }
+    {% if not loop.last %},{% endif %}
+{% endfor %}
+]
