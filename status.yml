@@ -15,9 +15,8 @@
 
     - name: Crear lista de servicios con estado simplificado
       set_fact:
-        services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.name, 'status': (item.status == 'active' | ternary('enabled', 'disabled'))}] }}"
-      loop: "{{ service_info.results }}"
-      when: item.status is defined  # Ignorar los registros sin información del servicio.
+        services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item, 'status': (item in service_info.results | map(attribute='stdout') | list) } ] }}"
+      loop: "{{ service_names }}"
 
     - name: Mostrar contenido JSON (para verificar)
       debug:
@@ -25,8 +24,8 @@
 
     - name: Guardar archivo JSON en el servidor destino
       copy:
-        content: "{{ hostvars | json_query('\"*\".services_list') | flatten | to_nice_json }}"
-        dest: "/tmp/remote_service_info_all.json"
+        content: "{{ services_list | to_nice_json }}"
+        dest: "/tmp/remote_service_info_{{ ansible_host }}.json"
       delegate_to: 192.168.73.21
 
 
