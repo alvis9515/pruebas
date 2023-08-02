@@ -11,21 +11,10 @@
       changed_when: false
       ignore_errors: yes  # Ignorar errores en caso de que un servicio no esté activo.
 
-    - name: Crear archivo JSON con la información simplificada
+    - name: Crear lista con la información de cada servicio
       set_fact:
-        json_content: |
-          {
-            "host": "{{ ansible_host }}"
-            "services": [
-              {% for item in service_info.results %}
-              {
-                "name": "{{ item.item }}"
-                "status": "{% if item.stdout == 'active' %}enabled{% else %}disabled{% endif %}"
-              }{% if not loop.last %}
-              {% endif %}
-              {% endfor %}
-            ]
-          }
+        services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.item, 'status': (item.stdout == 'active') | ternary('enabled', 'disabled')}] }}"
+      loop: "{{ service_info.results }}"
 
     - name: Mostrar contenido JSON (para verificar)
       debug:
