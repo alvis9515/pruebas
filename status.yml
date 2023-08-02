@@ -19,7 +19,7 @@
               {% for item in service_info.results %}
               {
                 "name": "{{ item.item }}",
-                "status": "{{ item.stdout }}"
+                "status": "{% if item.rc == 0 %}enabled{% else %}disabled{% endif %}"
               }{% if not loop.last %},{% endif %}
               {% endfor %}
             ]
