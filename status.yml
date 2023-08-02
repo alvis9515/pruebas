@@ -5,16 +5,16 @@
 
   tasks:
     - name: Obtener información sobre los servicios habilitados
-      shell: systemctl is-active {{ item }}
+      command: systemctl is-active {{ item }}
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
-      ignore_errors: yes  # Ignorar errores en caso de que un servicio no esté activo.
+      ignore_errors: true
 
     - name: Crear lista de servicios con estado simplificado
       set_fact:
-        services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item, 'status': (item in service_info.results | map(attribute='stdout') | list) } ] }}"
-      loop: "{{ service_names }}"
+        services_list: "{{ services_list | default([]) + [{'host': inventory_hostname, 'name': item.item, 'status': (item.rc == 0) } ] }}"
+      loop: "{{ service_info.results }}"
 
     - name: Mostrar contenido JSON (para verificar)
       debug:
@@ -23,7 +23,7 @@
     - name: Guardar archivo JSON en el servidor destino
       copy:
         content: "{{ services_list | to_nice_json }}"
-        dest: "/tmp/remote_service_info_{{ ansible_host }}.json"
+        dest: "/tmp/remote_service_info_{{ inventory_hostname }}.json"
       delegate_to: 192.168.73.21
 
 
