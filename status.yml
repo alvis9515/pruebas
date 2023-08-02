@@ -11,6 +11,7 @@
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
+      ignore_errors: yes
 
     - name: Crear lista de servicios con estado simplificado
       set_fact:
