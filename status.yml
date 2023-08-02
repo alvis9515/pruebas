@@ -7,7 +7,7 @@
     - name: Obtener información sobre los servicios habilitados
       systemd:
         name: "{{ item }}"
-        state: "status"
+        state: "query"
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
