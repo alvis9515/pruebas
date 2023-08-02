@@ -24,12 +24,12 @@
         state: started
         enabled: yes
 
-    - name: configurar puertos
-      firewalld:
-        port: 8080/tcp
-        permanent: yes
-        immediate: yes
-        state: enabled
+#    - name: configurar puertos
+#     firewalld:
+#        port: 8080/tcp
+#        permanent: yes
+#        immediate: yes
+#        state: enabled
 
 
 
