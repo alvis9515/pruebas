@@ -31,7 +31,8 @@
       debug:
         var: json_content
 
-    - name: Copiar archivo JSON al host remoto
+    - name: Guardar archivo JSON en el servidor destino
+      delegate_to: 192.168.73.21
       copy:
         content: "{{ json_content }}"
-        dest: "/tmp/remote_service_info.json"
+        dest: "/tmp/remote_service_info_{{ ansible_host }}.json"
