@@ -17,7 +17,7 @@
           {
             "host": "{{ ansible_host }}",
             "services": [
-              {% for item in service_info %}
+              {% for item in service_info.results %}
               {
                 "name": "{{ item.item }}",
                 "status": "{{ item.stdout }}",
@@ -26,6 +26,10 @@
               {% endfor %}
             ]
           }
+          
+    - name: Mostrar contenido JSON (para verificar)
+      debug:
+        var: json_content
 
     - name: Guardar contenido JSON en archivo
       copy:
