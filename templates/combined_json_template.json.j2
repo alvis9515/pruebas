@@ -1,0 +1,17 @@
+{
+  "combined_data": [
+    {% for json_data in combined_json_list %}
+    {
+      "host": "{{ json_data.host }}",
+      "services": [
+        {% for service in json_data.services %}
+        {
+          "name": "{{ service.name }}",
+          "status": "{{ service.status }}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
