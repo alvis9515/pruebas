@@ -5,7 +5,9 @@
 
   tasks:
     - name: Obtener información sobre los servicios habilitados
-      shell: "systemctl is-enabled {{ item }}"
+      systemd:
+        name: "{{ item }}"
+        state: "query"
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
@@ -18,8 +20,8 @@
             "services": [
               {% for item in service_info.results %}
               {
-                "name": "{{ item.item }}",
-                "status": "{% if item.rc == 0 %}enabled{% else %}disabled{% endif %}"
+                "name": "{{ item.name }}",
+                "status": "{% if item.enabled %}enabled{% else %}disabled{% endif %}"
               }{% if not loop.last %},{% endif %}
               {% endfor %}
             ]
