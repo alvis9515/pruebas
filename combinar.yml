@@ -26,7 +26,7 @@
         combined_json_list: "{{ json_1 + json_2 }}"
 
     - name: Crear archivo JSON combinado
-      copy:
-        content: "{{ combined_json_list | to_json }}"
+      template:
+        src: templates/combined_json_template.j2
         dest: "/tmp/combined_json_output.json"
       delegate_to: 192.168.73.21
