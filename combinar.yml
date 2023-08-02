@@ -21,13 +21,12 @@
       set_fact:
         json_2: "{{ file_2_content.content | b64decode | from_json }}"
 
-    # Continúa agregando tareas para decodificar el contenido de otros archivos JSON que desees combinar.
-
-    - name: Combinar información de archivos JSON en una lista
+    - name: Crear lista con la información de ambos JSON
       set_fact:
         combined_json_list: "{{ [json_1, json_2] }}"
 
     - name: Crear archivo JSON combinado
-      template:
-        src: templates/combined_json_template.json.j2
+      copy:
+        content: "{{ combined_json_list | to_json }}"
         dest: "/tmp/combined_json_output.json"
+      delegate_to: 192.168.73.21
