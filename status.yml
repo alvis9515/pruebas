@@ -23,7 +23,7 @@
             var: services_list
 
         - name: Guardar archivo JSON en el servidor destino
-          delegate_to: destino
+          delegate_to: 192.168.73.21
           copy:
             content: "{{ services_list | to_json }}"
             dest: "/tmp/remote_service_info_all.json"
