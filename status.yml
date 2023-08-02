@@ -1,17 +1,16 @@
 ---
-- name: Verificar el estado de un servicio en Linux
-  hosts: all
+- name: Verificar el estado de múltiples servicios en Linux
+  hosts: tu_servidor
   become: true
-  
+
   tasks:
     - name: Obtener información sobre los servicios habilitados
-      shell: "systemctl status {{ item }}"
+      shell: "systemctl is-enabled {{ item }}"
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
-      ignore_errors: true
 
-    - name: Crear archivo JSON con la información
+    - name: Crear archivo JSON con la información simplificada
       set_fact:
         json_content: |
           {
@@ -20,21 +19,20 @@
               {% for item in service_info.results %}
               {
                 "name": "{{ item.item }}",
-                "status": "{{ item.stdout }}",
-                "rc": "{{ item.rc }}"
+                "status": "{{ item.stdout }}"
               }{% if not loop.last %},{% endif %}
               {% endfor %}
             ]
           }
-          
+
     - name: Mostrar contenido JSON (para verificar)
       debug:
         var: json_content
 
-    - name: Guardar contenido JSON en archivo
+    - name: Copiar archivo JSON al host remoto
       copy:
         content: "{{ json_content }}"
-        dest: "/tmp/service_info.json"
+        dest: "/tmp/remote_service_info.json"
 
 
 
