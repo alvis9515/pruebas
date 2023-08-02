@@ -5,9 +5,7 @@
 
   tasks:
     - name: Obtener información sobre los servicios habilitados
-      service:
-        name: "{{ item }}"
-        state: "list"
+      shell: systemctl is-active {{ item }}
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
@@ -20,12 +18,13 @@
             "services": [
               {% for item in service_info.results %}
               {
-                "name": "{{ item.name }}",
-                "status": "{% if item.state == 'running' %}enabled{% else %}disabled{% endif %}"
+                "name": "{{ item.item }}",
+                "status": "{% if item.stdout == 'active' %}enabled{% else %}disabled{% endif %}"
               }{% if not loop.last %},{% endif %}
               {% endfor %}
             ]
           }
+
 
     - name: Mostrar contenido JSON (para verificar)
       debug:
