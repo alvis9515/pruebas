@@ -1,7 +1,7 @@
 ---
 - name: Verificar el estado de un servicio en Linux
   hosts: all
-  become: yes
+  become: true
   
   tasks:
     - name: Obtener información sobre los servicios habilitados
@@ -31,7 +31,6 @@
       copy:
         content: "{{ json_content }}"
         dest: "/tmp/service_info.json"
-
 
 
 
