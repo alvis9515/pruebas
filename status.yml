@@ -16,22 +16,16 @@
         services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.item, 'status': (item.stdout == 'active') | ternary('enabled', 'disabled')}] }}"
       loop: "{{ service_info.results }}"
 
-  # Bloque para guardar el archivo JSON después de que todas las tareas hayan sido ejecutadas en cada host.
-    - meta: end_play
-      block:
-        - name: Mostrar contenido JSON (para verificar)
-          debug:
-            var: services_list
+    - name: Crear lista con la información de cada servicio para el host actual
+      set_fact:
+        services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.item, 'status': (item.stdout == 'active') | ternary('enabled', 'disabled')}] }}"
+      loop: "{{ service_info.results }}"
 
-        - name: Guardar archivo JSON en el servidor destino
-          delegate_to: destino
-          copy:
-            content: "{{ services_list | to_json }}"
-            dest: "/tmp/remote_service_info_all.json"
-      rescue:
-        - name: Mostrar errores en caso de falla
-          debug:
-            msg: "Ocurrió un error en el bloque de tareas principales."
+    - name: Guardar archivo JSON en el servidor destino
+      delegate_to: destino
+      copy:
+        content: "{{ services_list | to_json }}"
+        dest: "/ruta/en/destino/remote_service_info_{{ ansible_host }}.json"
 
 
 
