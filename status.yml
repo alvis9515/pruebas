@@ -17,17 +17,17 @@
       loop: "{{ service_info.results }}"
 
   # Bloque para guardar el archivo JSON después de que todas las tareas han sido ejecutadas
-  - block:
-      - name: Mostrar contenido JSON (para verificar)
-        debug:
-          var: services_list
+    - block:
+        - name: Mostrar contenido JSON (para verificar)
+          debug:
+            var: services_list
 
-      - name: Guardar archivo JSON en el servidor destino
-        delegate_to: destino
-        copy:
-          content: "{{ services_list | to_json }}"
-          dest: "/tmp/remote_service_info_all.json"
-    rescue:
-      - name: Mostrar errores en caso de falla
-        debug:
-          msg: "Ocurrió un error en el bloque de tareas principales."
+        - name: Guardar archivo JSON en el servidor destino
+          delegate_to: destino
+          copy:
+            content: "{{ services_list | to_json }}"
+            dest: "/tmp/remote_service_info_all.json"
+      rescue:
+        - name: Mostrar errores en caso de falla
+          debug:
+            msg: "Ocurrió un error en el bloque de tareas principales."
