@@ -13,7 +13,7 @@
 
     - name: Crear lista de servicios con estado simplificado
       set_fact:
-        services_list: "{{ services_list | default([]) + [{'name': item.item, 'status': (item.stdout == 'active' | ternary('enabled', 'disabled'))}] }}"
+        services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.item, 'status': (item.stdout == 'active' | ternary('enabled', 'disabled'))}] }}"
       loop: "{{ service_info.results }}"
 
     - name: Mostrar contenido JSON (para verificar)
