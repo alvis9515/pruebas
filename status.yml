@@ -1,6 +1,6 @@
 ---
 - name: Verificar el estado de múltiples servicios en Linux
-  hosts: tu_servidor
+  hosts: all
   become: true
 
   tasks:
