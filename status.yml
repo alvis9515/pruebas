@@ -22,7 +22,7 @@
         ansible_connection: local
 
     - name: Guardar archivo JSON en el servidor destino
-      delegate_to: 192.168.73.16
+      delegate_to: 192.168.73.21
       copy:
         content: "{{ hostvars[ansible_hostname].services_list | to_json }}"
         dest: "/tmp/remote_service_info_all.json"
