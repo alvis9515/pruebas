@@ -1,0 +1,33 @@
+- name: Combinar archivos JSON en uno solo
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Leer contenido del primer archivo JSON
+      slurp:
+        src: "/tmp/remote_service_info_192.168.73.21.json"
+      register: file_1_content
+
+    - name: Leer contenido del segundo archivo JSON
+      slurp:
+        src: "/tmp/remote_service_info_192.168.73.23.json"
+      register: file_2_content
+
+    - name: Decodificar contenido del primer archivo JSON
+      set_fact:
+        json_1: "{{ file_1_content.content | b64decode | from_json }}"
+
+    - name: Decodificar contenido del segundo archivo JSON
+      set_fact:
+        json_2: "{{ file_2_content.content | b64decode | from_json }}"
+
+    # Continúa agregando tareas para decodificar el contenido de otros archivos JSON que desees combinar.
+
+    - name: Combinar información de archivos JSON en una lista
+      set_fact:
+        combined_json_list: "{{ [json_1, json_2] }}"
+
+    - name: Crear archivo JSON combinado
+      template:
+        src: templates/combined_json_template.json.j2
+        dest: "/tmp/combined_json_output.json"
