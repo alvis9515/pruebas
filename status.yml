@@ -15,14 +15,17 @@
       set_fact:
         services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.item, 'status': (item.stdout == 'active') | ternary('enabled', 'disabled')}] }}"
       loop: "{{ service_info.results }}"
-      delegate_facts: true
+
+    - name: Agregar el servidor destino a la lista de hosts
+      add_host:
+        name: destino
+        ansible_connection: local
 
     - name: Guardar archivo JSON en el servidor destino
-      delegate_to: 192.168.73.21
+      delegate_to: 192.168.73.16
       copy:
-        content: "{{ hostvars[item].services_list | to_json }}"
-        dest: "/tmp/remote_service12_info_all.json"
-
+        content: "{{ hostvars[ansible_hostname].services_list | to_json }}"
+        dest: "/tmp/remote_service_info_all.json"
 
 
 
