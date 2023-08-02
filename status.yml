@@ -7,7 +7,7 @@
     - name: Obtener información sobre los servicios habilitados
       systemd:
         name: "{{ item }}"
-        state: "query"
+        state: "status"
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
@@ -21,7 +21,7 @@
               {% for item in service_info.results %}
               {
                 "name": "{{ item.name }}",
-                "status": "{% if item.enabled %}enabled{% else %}disabled{% endif %}"
+                "status": "{% if item.status == 'active' %}enabled{% else %}disabled{% endif %}"
               }{% if not loop.last %},{% endif %}
               {% endfor %}
             ]
