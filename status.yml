@@ -11,17 +11,23 @@
       changed_when: false
       ignore_errors: yes  # Ignorar errores en caso de que un servicio no esté activo.
 
-    - name: Crear lista con la información de cada servicio
+    - name: Crear lista con la información de cada servicio para el host actual
       set_fact:
         services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.item, 'status': (item.stdout == 'active') | ternary('enabled', 'disabled')}] }}"
       loop: "{{ service_info.results }}"
 
-    - name: Mostrar contenido JSON (para verificar)
-      debug:
-        var: json_content
+  # Bloque para guardar el archivo JSON después de que todas las tareas han sido ejecutadas
+  - block:
+      - name: Mostrar contenido JSON (para verificar)
+        debug:
+          var: services_list
 
-    - name: Guardar archivo JSON en el servidor destino
-      delegate_to: 192.168.73.21
-      copy:
-        content: "{{ json_content }}"
-        dest: "/tmp/remote_service_info_{{ ansible_host }}.json"
+      - name: Guardar archivo JSON en el servidor destino
+        delegate_to: destino
+        copy:
+          content: "{{ services_list | to_json }}"
+          dest: "/tmp/remote_service_info_all.json"
+    rescue:
+      - name: Mostrar errores en caso de falla
+        debug:
+          msg: "Ocurrió un error en el bloque de tareas principales."
