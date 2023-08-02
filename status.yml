@@ -26,7 +26,7 @@
       delegate_to: 192.168.73.21
       copy:
         content: "{{ hostvars[item].services_list | to_json }}"
-        dest: "/tmp/remote_service_info_{{ item }}.json"
+        dest: "/tmp/remote_service_info21_{{ item }}.json"
       loop: "{{ groups['all'] }}"
 
 
