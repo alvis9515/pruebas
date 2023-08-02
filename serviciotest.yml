@@ -43,6 +43,6 @@
       copy:
         content: "{{ results | to_nice_json }}"
         dest: "/var/tmp/resultados.json"
-      when: results|length > 0  # Exportar solo si hay resultados en la variable 'results'
+      when: results|length > 0  
 
 
