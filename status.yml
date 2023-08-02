@@ -11,22 +11,31 @@
       changed_when: false
       ignore_errors: yes  # Ignorar errores en caso de que un servicio no esté activo.
 
-    - name: Crear lista con la información de cada servicio para el host actual
+    - name: Crear archivo JSON con la información simplificada
       set_fact:
-        services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.item, 'status': (item.stdout == 'active') | ternary('enabled', 'disabled')}] }}"
-      loop: "{{ service_info.results }}"
+        json_content: |
+          {
+            "host": "{{ ansible_host }}",
+            "services": [
+              {% for item in service_info.results %}
+              {
+                "name": "{{ item.name }}",
+                "status": "{% if item.status == 'active' %}enabled{% else %}disabled{% endif %}"
+              }{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ]
+          }
 
-    - name: Agregar el servidor destino a la lista de hosts
-      add_host:
-        name: 192.168.73.21
-        ansible_connection: local
+    - name: Mostrar contenido JSON (para verificar)
+      debug:
+        var: json_content
 
+    # Guardar archivo JSON en el servidor destino
     - name: Guardar archivo JSON en el servidor destino
+      lineinfile:
+        path: "/tmp/remote_service_info22_{{ ansible_host }}.json"
+        line: "{{ json_content }}"
       delegate_to: 192.168.73.21
-      copy:
-        content: "{{ hostvars[ansible_hostname].services_list | to_json }}"
-        dest: "/tmp/remote_service_info_all.json"
-
 
 
 
