@@ -39,7 +39,7 @@
       lineinfile:
         path: "/tmp/remote_service_info_{{ ansible_host }}.json"
         line: "{{ json_content }}"
-      delegate_to: destino
+      delegate_to: 192.168.73.21
 
 
 
