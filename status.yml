@@ -9,6 +9,7 @@
       loop: "{{ service_names }}"
       register: service_info
       changed_when: false
+      ignore_errors: yes  # Ignorar errores en caso de que un servicio no esté activo.
 
     - name: Crear archivo JSON con la información simplificada
       set_fact:
@@ -24,7 +25,6 @@
               {% endfor %}
             ]
           }
-
 
     - name: Mostrar contenido JSON (para verificar)
       debug:
