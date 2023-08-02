@@ -15,13 +15,14 @@
       set_fact:
         json_content: |
           {
-            "host": "{{ ansible_host }}",
+            "host": "{{ ansible_host }}"
             "services": [
               {% for item in service_info.results %}
               {
-                "name": "{{ item.item }}",
+                "name": "{{ item.item }}"
                 "status": "{% if item.stdout == 'active' %}enabled{% else %}disabled{% endif %}"
-              }{% if not loop.last %},{% endif %}
+              }{% if not loop.last %}
+              {% endif %}
               {% endfor %}
             ]
           }
