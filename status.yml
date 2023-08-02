@@ -11,6 +11,7 @@
       changed_when: false
       ignore_errors: yes  # Ignorar errores en caso de que un servicio no esté activo.
 
+
     - name: Crear archivo JSON con la información simplificada
       set_fact:
         json_content: |
@@ -19,8 +20,8 @@
             "services": [
               {% for item in service_info.results %}
               {
-                "name": "{{ item.name }}",
-                "status": "{% if item.status == 'active' %}enabled{% else %}disabled{% endif %}"
+                "name": "{{ item.item.name }}",
+                "status": "{% if item.item.status == 'active' %}enabled{% else %}disabled{% endif %}"
               }{% if not loop.last %},{% endif %}
               {% endfor %}
             ]
@@ -36,6 +37,12 @@
         path: "/tmp/remote_service_info22_{{ ansible_host }}.json"
         line: "{{ json_content }}"
       delegate_to: 192.168.73.21
+
+
+
+
+
+
 
 
 
