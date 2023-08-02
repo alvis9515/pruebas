@@ -14,7 +14,7 @@
     - name: Crear lista de servicios con estado simplificado
       set_fact:
         services_list: "{{ services_list | default([]) + [{'host': inventory_hostname, 'name': item.item, 'status': (item.rc == 0) } ] }}"
-      loop: "{{ service_info.results }}"
+      with_items: "{{ service_info.results }}"
 
     - name: Mostrar contenido JSON (para verificar)
       debug:
