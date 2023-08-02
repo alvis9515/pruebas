@@ -11,34 +11,19 @@
       changed_when: false
       ignore_errors: yes  # Ignorar errores en caso de que un servicio no esté activo.
 
-    - name: Convertir resultados a cadenas
+    - name: Crear lista de servicios con estado simplificado
       set_fact:
-        service_info_str: "{{ service_info.results | map(attribute='stdout') | list }}"
-
-    - name: Crear archivo JSON con la información simplificada
-      set_fact:
-        json_content: |
-          {
-            "host": "{{ ansible_host }}",
-            "services": [
-              {% for item in service_info_str %}
-              {
-                "name": "{{ item }}",
-                "status": "{% if item == 'active' %}enabled{% else %}disabled{% endif %}"
-              }{% if not loop.last %},{% endif %}
-              {% endfor %}
-            ]
-          }
+        services_list: "{{ services_list | default([]) + [{'name': item.item, 'status': (item.stdout == 'active' | ternary('enabled', 'disabled'))}] }}"
+      loop: "{{ service_info.results }}"
 
     - name: Mostrar contenido JSON (para verificar)
       debug:
-        var: json_content
+        var: services_list
 
-    # Guardar archivo JSON en el servidor destino
     - name: Guardar archivo JSON en el servidor destino
-      lineinfile:
-        path: "/tmp/remote_service_info_{{ ansible_host }}.json"
-        line: "{{ json_content }}"
+      copy:
+        content: "{{ services_list | to_nice_json }}"
+        dest: "/tmp/remote_service_info_{{ ansible_host }}.json"
       delegate_to: 192.168.73.21
 
 
