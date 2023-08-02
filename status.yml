@@ -21,7 +21,7 @@
       delegate_to: 192.168.73.21
       copy:
         content: "{{ services_list | to_json }}"
-        dest: "/ruta/en/destino/remote_service_info_{{ ansible_host }}.json"
+        dest: "/tmp/remote_service_info_{{ ansible_host }}.json"
 
 
 
