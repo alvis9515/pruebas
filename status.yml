@@ -20,9 +20,8 @@
     - name: Guardar archivo JSON en el servidor destino
       delegate_to: 192.168.73.21
       copy:
-        content: "{{ hostvars[item].services_list | to_json }}"
-        dest: "/tmp/remote_service_info21_{{ item }}.json"
-      loop: "{{ groups['all'] }}"
+        content: "{{ services_list | to_json }}"
+        dest: "/ruta/en/destino/remote_service_info_{{ ansible_host }}.json"
 
 
 
