@@ -15,6 +15,7 @@
       set_fact:
         services_list: "{{ services_list | default([]) + [{'host': ansible_host, 'name': item.item, 'status': (item.stdout == 'active' | ternary('enabled', 'disabled'))}] }}"
       loop: "{{ service_info.results }}"
+      when: item.stdout is defined  # Ignorar los registros sin información del servicio.
 
     - name: Mostrar contenido JSON (para verificar)
       debug:
@@ -25,6 +26,7 @@
         content: "{{ services_list | to_nice_json }}"
         dest: "/tmp/remote_service_info_{{ ansible_host }}.json"
       delegate_to: 192.168.73.21
+
 
 
 
