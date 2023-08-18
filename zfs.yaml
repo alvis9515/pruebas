@@ -5,7 +5,15 @@
   tasks:
     - name: Crear sistema de archivos GA14
       command: zfs create rpool/GA14
+      
     - name: Crear sistema de archivos SRU14
       command: zfs create rpool/SRU14
+      
     - name: ELIMINAR sistema de archivos GA12
       command: zfs destroy rpool/GA12
+      
+    - name: Configurar publisher SRU14
+      command: pkg set-publisher -g file:///rpool/SRU12/ solaris
+
+    - name: Configurar publisher GA14
+      command: pkg set-publisher -g file:///rpool/GA12/ solaris
