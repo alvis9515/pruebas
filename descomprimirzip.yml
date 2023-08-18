@@ -14,3 +14,9 @@
         dest: /rpool/GA14/
         remote_src: yes
       with_items: "{{ archivos_zip.stdout_lines }}"
+
+    - name: Eliminar archivos ZIP
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items: "{{ archivos_zip.stdout_lines }}"
