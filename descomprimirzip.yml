@@ -6,9 +6,11 @@
     - name: Listar archivos ZIP en la carpeta
       shell: "ls /rpool/GA14/*.zip"
       register: archivos_zip
+      changed_when: false
 
     - name: Descomprimir archivos ZIP
       unarchive:
         src: "{{ item }}"
         dest: /rpool/GA14/
+        remote_src: yes
       with_items: "{{ archivos_zip.stdout_lines }}"
