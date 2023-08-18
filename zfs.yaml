@@ -4,19 +4,19 @@
   become: true
   tasks:
     - name: Crear sistema de archivos GA12
-      solaris_zfs:
+      community.general.zfs:
         name: GA12
         state: present
         mountpoint: /rpool/GA12
 
     - name: Crear sistema de archivos SRU12
-      solaris_zfs:
+      community.general.zfs:
         name: SRU13
         state: present
         mountpoint: /rpool/SRU13
 
     - name: Crear sistema de archivos GA13
-      solaris_zfs:
+      community.general.zfs:
         name: GA13
         state: present
         mountpoint: /rpooL/GA13
