@@ -1,6 +1,6 @@
 ---
 - name: Descomprimir archivos ZIP en una carpeta en el servidor remoto
-  hosts: alll
+  hosts: all
   become: true
   tasks:
     - name: Listar archivos ZIP en la carpeta
