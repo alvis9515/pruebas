@@ -1,0 +1,22 @@
+[
+    {
+        "host": "192.168.73.21",
+        "name": "httpd",
+        "status": "True"
+    },
+    {
+        "host": "192.168.73.21",
+        "name": "kvm_stat.service",
+        "status": "False"
+    },
+   {
+        "host": "192.168.73.23",
+        "name": "httpd",
+        "status": "False"
+    },    
+    {
+        "host": "192.168.73.23",
+        "name": "kvm_stat.service",
+        "status": "False"
+    }
+]
