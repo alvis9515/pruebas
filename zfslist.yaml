@@ -1,0 +1,10 @@
+---
+- name: Crear sistema de archivos dentro de sistemas de archivos ZFS existentes
+  hosts: all
+  become: true
+- name: Create a new file system called myfs in pool rpool with the setuid property turned off
+  community.general.zfs:
+    name: rpool/myfs
+    state: present
+    extra_zfs_properties:
+      setuid: 'off'
