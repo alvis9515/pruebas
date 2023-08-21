@@ -1,1 +1,3 @@
-sdasd
+collections:
+  - name: community.general
+    version: master
