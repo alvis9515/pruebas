@@ -4,7 +4,7 @@
   tasks:
     - name: Create a new file system called myfs in pool rpool with the setuid property turned off
       community.general.zfs:
-        name: rpool/myfs
+        name: rpool/myfss
         state: present
         extra_zfs_properties:
           setuid: 'off'
