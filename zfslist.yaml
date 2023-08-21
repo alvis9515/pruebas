@@ -8,3 +8,7 @@
         state: present
         extra_zfs_properties:
           setuid: 'off'
+    collections:
+      - name: community.general
+        version: master
+        source: "{{ github_community_general_repo }}"
