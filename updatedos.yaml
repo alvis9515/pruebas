@@ -25,7 +25,7 @@
       when:
         ansible_pkg_mgr == 'apt'
     - name: Actualizar servidor (vía zypper)
-      zypper:
+      community.general.zypper:
         update_cache: yes
         name: '*'
         state: latest
