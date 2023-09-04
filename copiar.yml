@@ -1,0 +1,14 @@
+---
+- name: Copiar archivo desde Oracle Linux a servidor Windows
+  hosts: servidor_linux
+  gather_facts: yes
+  tasks:
+    - name: Copiar archivo desde Linux a servidor local
+      ansible.builtin.copy:
+        src: /ruta/al/archivo.txt  # Reemplaza con la ruta real del archivo en el servidor Linux
+        dest: /ruta/de/destino/archivo.txt  # Ruta temporal en el servidor Linux
+
+    - name: Copiar archivo desde servidor local a Windows
+      win_copy:
+        src: /ruta/de/destino/archivo.txt  # Ruta temporal en el servidor Linux
+        dest: C:\ruta\en\el\servidor\Windows\archivo.txt 
