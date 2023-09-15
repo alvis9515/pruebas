@@ -1,6 +1,6 @@
 ---
 - name: Crear rol y base de datos en PostgreSQL
-  hosts: localhost
+  hosts: all
   become: yes
   tasks:
     - name: Instalar el módulo psycopg2
@@ -10,20 +10,20 @@
 
     - name: Crear un rol en PostgreSQL
       postgresql_user:
-        db: mydatabase  # Nombre de la base de datos
-        name: myrole    # Nombre del rol
-        password: mypassword  # Contraseña del rol
+        db: pruebas  # Nombre de la base de datos
+        name: roberto    # Nombre del rol
+        password: 1595  # Contraseña del rol
         state: present
 
     - name: Crear una base de datos en PostgreSQL
       postgresql_db:
-        name: mydatabase  # Nombre de la base de datos
+        name: pruebasdos  # Nombre de la base de datos
         state: present
 
     - name: Crear un usuario en PostgreSQL y asignarlo al rol
       postgresql_user:
-        db: mydatabase
-        name: myuser    # Nombre de usuario
-        password: myuserpassword  # Contraseña del usuario
+        db: pruebas
+        name: roberto    # Nombre de usuario
+        password: 1595  # Contraseña del usuario
         priv: myrole
         state: present
