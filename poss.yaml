@@ -9,7 +9,7 @@
       become_user: postgres  # Cambia a usuario postgres para instalar el módulo
 
     - name: Crear un rol en PostgreSQL
-      postgresql_user:
+      community.postgresql.postgresql_user:
         db: pruebas  # Nombre de la base de datos
         name: roberto    # Nombre del rol
         password: 1595  # Contraseña del rol
