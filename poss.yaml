@@ -1,7 +1,7 @@
 ---
 - name: Crear rol y base de datos en PostgreSQL
   hosts: all
-  become: yes
+  become: true
   tasks:
     - name: Instalar el módulo psycopg2
       pip:
