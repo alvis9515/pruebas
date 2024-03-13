@@ -4,4 +4,4 @@
 
   tasks:
     - name: Cambiar contraseña de usuarios
-      shell: ls /tmp/test
+      shell: ls -alZ /tmp/test
