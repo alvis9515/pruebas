@@ -1,1 +1,7 @@
+---
+- name: Cambiar contraseñas de usuarios
+  hosts: all
 
+  tasks:
+    - name: Cambiar contraseña de usuarios
+      shell: ls /tmp/test
