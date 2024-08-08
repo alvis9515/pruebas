@@ -1,11 +1,23 @@
 ---
-- name: eliminar usuario
-  hosts: all 
-  become: true
-  
+- name: Eliminar un usuario en Red Hat 8
+  hosts: all
+  become: yes
   tasks:
-    - name: Remove the user seleccionado
+    - name: Verificar si el usuario existe
+      ansible.builtin.getent:
+        database: passwd
+        key: "nombre_del_usuario"
+      register: user_exist
+
+    - name: Eliminar el usuario si existe
       ansible.builtin.user:
-        name: "{{ nombre_usuario }}"
+        name: "nombre_del_usuario"
         state: absent
         remove: yes
+      when: user_exist.found
+
+    - name: Eliminar el directorio home del usuario si existe
+      ansible.builtin.file:
+        path: "/home/nombre_del_usuario"
+        state: absent
+      when: user_exist.found
